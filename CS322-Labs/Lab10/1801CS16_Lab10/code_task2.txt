@@ -1,0 +1,46 @@
+# Following Program adds integers from 0 to 9 and stores the sum in register s1 
+# Register Name				 		$s0    $s1    $t0 
+# Value Before Program Execution 	 0      0      0	(all values in hex)
+
+Label         Instruction 				Machine Code		Number of times Executed
+		    add $s0, $0, $0				00008020					1
+			add $s1, $0, $0				00008820					1
+			addi $t0, $0, 10			2008000a					1
+loop:		
+			slt $t1, $s0, $t0			0208482a					11
+			beq $t1, $0, done			11200003					11
+			add $s1, $s1, $s0			02308820					10
+			addi $s0, $s0, 1			22100001					10	
+			j loop						08000003					10
+done:
+
+# Register Name						$s0    $s1    $t0 
+# Value After Program Execution 	 a      2d     a     (all values in hex)
+
+
+# Total number of instructions executed = 1 + 1 + 1 + 11 + 11 + 10 + 10 + 10 = 55 
+
+# Cycles Per Instruction (CPI) = Total Number of Execution Cycles / Total Number of Instructions Executed
+
+# Number of Cycles in Single Cycle Processor 
+
+	As each instruction takes one clock cycle to get executed. 
+	Number of Cycles in Single Cycle Processor = Total number of instructions executed = 55
+	CPI = 55/55 = 1
+
+# Number of Cycles in Multi Cycle Processor 
+
+	As each instruction takes different number of clock cycles to get executed.
+	cycles - instruction
+	3 - beq,j
+	4 - sw,addi,r-type
+	5 - lw
+
+	Number of Cycles in Multi Cycle Processor = 1*4 + 1*4 +1*4 + 11*4 + 11*3 + 10*4 + 10*4 + 10*3 = 199
+	CPI = 199/55 = 3.6181
+
+# Number of Cycles in Pipelined Processor 
+
+	As each instruction takes different number of clock cycles to get executed.
+	Number of Cycles in Pipelined Processor = 128 (Calculated using logisim)
+	CPI = 128/55 = 2.3272

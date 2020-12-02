@@ -1,0 +1,22 @@
+
+# Test the MIPS multi cycle Processor Task 2
+# Write a program to add 5 numbers and store the result in data memory location X
+# First data (5(05H),22(16H),16(10H),34(22H),48(30H)) [all in decimal rep.] is stored in memory location 50H to 54H sequentially (this must be done manually before running the program)
+# sum will be stored in register $6 and then at memory location 96 i.e. 60H
+
+# 		Assembly 		Description   			Address 	Machine 
+		
+
+		lw $1,80($0)	# $1 = 5      			0			8c010050
+		lw $2,81($0)	# $2 = 22     			4  			8c020051
+		lw $3,82($0)	# $3 = 16	  			8			8c030052
+		lw $4,83($0)	# $4 = 34     			12			8c040053
+		lw $5,84($0)	# $5 = 48	  			16			8c050054
+		addi $6,$0,$0	# $6 = 0	  			20			20060000
+		add $6,$1,$2   	# $6 <= 5 + 22 = 27		24			00223020
+		add $6,$6,$3	# $6 <= 27 + 16 = 43	28			00c33020
+		add $6,$6,$4	# $6 <= 43 + 34 = 77	32			00c43020
+		add $6,$6,$5	# $6 <= 77 + 48 = 125 	36			00c53020
+		sw $6,96($0)	# write addr 96 = 125	40			ac060060
+
+# mem addr 60H(96) => 7DH(125)

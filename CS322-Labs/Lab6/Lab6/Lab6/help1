@@ -1,0 +1,124 @@
+ 
+ nasm -f elf32 string.asm 
+ ld -m elf_i386 string.o io.o test
+ ld -m elf_i386 string.o io.o -o test
+
+ ./test 1 2 3 4 5
+ ls -l
+ ls
+ nasm -f elf32 binchar.asm 
+ ld -m elf_i386 binchar.o io.o -o test
+ ls
+
+ ld -m elf_i386 aray_sum.o -o test
+
+ hexbin test
+ hexdump -C test
+ hexdump -C aray_sum.o
+ gcc -m32 -S hello.c 
+ gcc -m32  hello.c -o geek32 
+ gcc -m64  hello.c -o geek64 
+
+ sudo apt-get install gcc-multilib
+ 
+ objdump -x geek32
+ hexdump -C hello.o
+ hexdump -C hello.o
+  
+ ./sq32 2 3
+
+
+ nasm -f elf64 L6_1_hello.asm 
+
+ objdump -x L6_1_hello.o
+ objdump -d L6_1_hello.o
+ ld L6_1_hello.0
+ ld L6_1_hello.o
+ ls
+ ./a.out 
+ objdump -d a.out 
+ objdump -d L6_1_hello.o
+ objdump -d a.out 
+ objdump -D a.out 
+ hexdump a.out 
+ hexdump -d a.out 
+ hexdump -x a.out 
+ hexdump -d a.out 
+ hexdump -C a.out 
+ hexdump -C L6_1_hello.o
+ hexdump -C a.out 
+ objdump -D a.out 
+
+ objdump -r -d hello
+ gcc static-local.c 
+ gcc -S static-local.c 
+
+ nasm -f elf64 L6_C_2.asm 
+ nasm -f elf64 L6_C_2.asm 
+ nasm -f elf64 L6_C_2.asm 
+
+ man syscall
+
+ nasm -f elf64 L6_factorial.asm 
+
+ objdump -d  L6_factorial.o 
+ gcc L6_factorial_main.c 
+ gcc -std=c99 L6_factorial.o L6_factorial_main.c 
+  
+ nasm -felf64 -o reverse reverse.asm
+
+ nasm -felf64 -o reverse L6_reverse.asm 
+
+ chmod 777 reverse 
+
+ nasm -felf64 -o reverse.o L6_reverse.asm 
+ ld -o reverse reverse.o 
+ ls
+
+ nasm -felf64 -o sum.o L6_sum.asm 
+ ld -o sum sum.o 
+ ./sum 100
+ nasm -felf64 -o sum.o L6_sum.asm 
+ ld -o sum sum.o 
+ ./sum 100
+ nasm -felf64 -o sum.o L6_sum.asm 
+ ld -o sum sum.o 
+ ./sum 100
+
+ gcc -std=c99 L6_factorial.o L6_factorial_main_t.c 
+  ./a.out 
+  gcc -std=c99 L6_factorial.o L6_factorial_main_t.c 
+  ./a.out 
+  gcc -std=c99 L6_factorial.o L6_factorial_main_t.c 
+  ./a.out 
+  ls
+  gcc -std=c99 L6_factorial.o L6_factorial_main_t_c.c 
+  gcc   L6_factorial_main_t_c.c 
+  ls
+  ./a.out 
+  gcc   L6_factorial_main_t_c.c 
+  ./a.out 
+  gcc   L6_factorial_main_t_c.c 
+  ./a.out 
+  gcc -std=c99 L6_factorial.o L6_factorial_main_t_c.c 
+  ./a.out 
+  gcc   L6_factorial_main_t_c.c 
+  ./a.out 
+  gcc   L6_factorial_main_t_c.c 
+  ./a.out 
+  gcc -std=c99 L6_factorial.o L6_factorial_main_t_c.c 
+  ./a.out 
+
+  gcc -m32 -S Sum5.c -o Sum5_32.s
+  ls
+  more Sum5_32.s 
+  gcc  -S Sum5.c -o Sum5_64.s
+
+  readelf -a reverse.o 
+  ls
+  readelf -a a.out 
+
+  readelf -a a.out 
+  readelf -a c.out 
+
+  gcc   L6_factorial_main_t_c.c -o facorial_C

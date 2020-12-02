@@ -1,0 +1,444 @@
+Name : Mangesh Chandrawanshi 
+Roll No. : 1801CS16
+Date : 29/08/2020
+Course : CS322 Computer Architectue Lab 
+Submission : Lab1
+FileName : 1801CS16_Lab1.pdf
+
+# ORG is a standard (almost universal) command that tells the assembler where the program is to reside in memory. It is the address of the first instruction (or data) of the program (the ORiGin.)
+# DB reserves one byte of memory and initialize the byte with the specified value
+
+P1) Program to swap two 8-bit numbers
+
+Algorithm/Comments : 
+Load value at 2500H in A
+Move it to B
+Load value at 2501H in A
+Store it to 2500H
+Move value in B to A
+Store it to 2501H
+
+Code:
+
+# ORG 2000H
+# BEGIN 2000H
+
+LDA 2500H
+MOV B,A
+LDA 2501H
+STA 2500H
+MOV A,B
+STA 2501H
+HLT
+
+# ORG 2500H
+# DB 14H,24H
+
+// INPUT -> 2500H = 14H, 2501H = 24H
+// OUTPUT -> 2500H = 24H, 2501H = 14H
+
+
+P2) Program to square of an 8-bit number (Only if square can be stored in 8-bit)
+
+Algorithm/Comments :
+Load Memory Location of the given number in HL pair register
+Move the value to B and C from M
+Initialize A to zero
+Add value in B to A , Decrement C continue this till C is non-zero
+Now A has squared value, store it in Memory(Here at 2500H)
+
+Code :
+
+# ORG 2000H
+# BEGIN 2000H
+
+		LXI H,3000H
+		MOV B,M
+		MOV C,M
+		MVI A,00H
+
+LOOP:  	ADD B
+		DCR C
+		JNZ LOOP
+		
+		INX H
+		STA 2500H
+		HLT	
+
+# ORG 3000H
+# DB 05H
+
+// INPUT -> 3000H = 05H
+// OUTPUT -> 2500H = 19H
+
+P3) Program to find Largest of two 8-bit numbers
+
+Algorithm/Comments :
+Load Memory Location of the first number in HL pair register
+Move value to A
+Increment H for accessing second number
+Move it to B
+Compare value in B with A
+if it is greater, move it to A
+else keep as it is
+Store in the value in A (largest number) at desired Memory Location (Here at 2500H)
+
+/*CMP instruction :
+
+This is a 1-byte instruction. It compares the data byte in the register or memory with the contents of accumulator.
+If A less than (R/M), the CY(carry) flag is set and Zero flag is reset.
+If A equals to (R/M), the Zero flag is set and CY flag is reset.
+If A greater than (R/M), the CY and Zero flag are reset.*/
+
+Code :
+
+# ORG 2000H
+# BEGIN 2000H
+
+		LXI H,3000H
+		MOV A,M
+		INX H
+		MOV B,M
+		CMP B
+		JNC GO
+
+		MOV A,B
+GO:		INX H
+		STA 2500H
+		HLT
+
+# ORG 3000H
+# DB 05H,08H
+
+// INPUT -> 3000H = 05H, 3001H = 08H
+// OUTPUT ->  2500H = 08H
+
+P4) Program to find smallest from an Array
+
+Algorithm/Comments :
+Load Memory Location of the size of array in HL pair register
+Move the value (size) to C
+Increment H to access array elements
+Move first element to accumulator
+Decrement C ( working as a counter )
+   
+Starting of Loop - Increment H (next element)
+Move the value to B
+Compare it with value in A
+if value in B is smaller, move it to A
+else keep as it is 
+Decrement C and loop till C is non-zero
+
+Smallest element is at A
+Store it in Desired Memory Location (Here at 2500H)
+
+Code:
+
+# ORG 2000H
+# BEGIN 2000H
+
+		LXI H,3000H
+		MOV C,M
+		INX H
+		MOV A,M
+		DCR C
+
+LOOP:	INX H
+		MOV B,M
+		CMP B
+		JC GO
+		MOV A,B
+
+GO:     DCR C 
+		JNZ LOOP
+		INX H
+		STA 2500H
+		HLT
+
+# ORG 3000H
+# DB 05H,08H,01H,12H,06H,03H
+
+// INPUT -> 3000H = 05H (size of array), (elements in array) 3001H = 08H, 3002H = 01H, 3003H = 12H, 3004H = 06H 3005H = 03H
+// OUTPUT ->  2500H = 01H
+
+P5) Program to Sort the array in Descending Order (in place sorting)
+
+Algorithm/Comments :
+Load Memory Location of the size of array in HL pair register
+Move the value (size) to C
+
+Starting of Loop1 - Load Memory Location of the size of array in HL pair register
+Move the value (size) to D
+Increment H to access array elements
+Decrement D ( working as a counter )
+
+Starting of Loop2 - Move first element to accumulator
+Increment H (next element)
+Compare value in M (at H) with value in A
+if value in A is smaller, swap them 
+else keep as it is 
+Decrement D and loop till D is non-zero
+
+Decrement C and loop till C is non-zero
+
+
+Code :
+
+# ORG 2000H
+# BEGIN 2000H
+
+		LXI H,3000H
+		MOV C,M
+LOOP1:	LXI H,3000H
+		MOV D,M
+
+		INX H
+		DCR D
+LOOP2:	MOV A,M
+		INX H
+		CMP M
+		JNC GO
+		JZ GO
+
+		MOV B,M
+		MOV M,A
+		DCX H
+		MOV M,B
+		INX H
+
+GO:     DCR D
+		JNZ LOOP2
+		DCR C
+		JNZ LOOP1
+		HLT
+
+# ORG 3000H
+# DB 05H,08H,01H,12H,06H,03H
+
+// INPUT -> 3000H = 05H (size of array), (elements in array) 3001H = 08H, 3002H = 01H, 3003H = 12H, 3004H = 06H, 3005H = 03H
+// OUTPUT -> Sorted Array in Descending Order (12H,08H,06H,03H,01H)
+
+P6) Program to convert HEX to BCD
+
+Algorithm/Comments :
+Load Memory Location of the number in HL register pair
+Move value to C
+
+Resultant BCD representation will be stored in A(LS) and B(MS) registers 
+
+Starting of Loop - Add 01H to A
+DAA instruction is applied to get BCD sum as Outcome
+if carry flag is set , increment B
+else do nothing 
+Decrement C and continue loop till C is non-zero
+
+Move value in A to L and value in B to H 
+Store the BCD representation ( in HL register pair ) to desired memory location ( Here at 2500H ) 
+
+Code :
+
+# ORG 2000H
+# BEGIN 2000H
+
+		LXI H,3000H
+		MOV C,M
+
+LOOP:	ADI 01H
+		DAA
+		JNC GO
+		INR B
+
+GO:		DCR C
+		JNZ LOOP
+
+		MOV L,A
+		MOV H,B
+		SHLD 2500H
+		HLT
+
+# ORG 3000H
+# DB A5H
+
+// INPUT -> 3000H = A5H
+// OUTPUT -> 2050H = 65H (LS), 2051H = 01H (MS) (i.e. 0000 0001 0110 0101)
+
+P7) Write a Program to multiply a Number by 7 (Without actually adding or multiplying) (works only if on multiplying by 7 number can be represented using 8 bits)
+
+Algorithm/Comments :
+Load Memory Location of the given number in HL register pair
+Move the number to A and C 
+Apply instruction RLC 3 times
+It will shift contents in A to the left 3 times (equivalent to multiply by 8)
+Subtract value in C from A
+Store value in A(7 multipled by original number) to desired memory location (Here at 2500H)
+
+Code :
+
+# ORG 2000H
+# BEGIN 2000H
+
+LXI H,3000H
+MOV A,M
+MOV C,M
+RLC
+RLC
+RLC
+SUB C
+STA 2500H
+HLT
+
+# ORG 3000H
+# DB 05H
+
+// INPUT -> 3000H = 05H
+// OUTPUT -> 2500H = 23H
+
+
+P8) Count total odd numbers in an array
+
+Algorithm/Comments :
+Load Memory Location of the size of array in HL register pair
+Initialize B with 0
+Move size of array value (in M) to C
+Increment H (to access array elements)
+
+Starting of loop - Move element to A
+Apply AND with 01H on A
+if A is zero do nothing
+else increment B (as current accessed element is odd)
+Decrement C , Increment H continue loop till C is non-zero
+
+Move B to A
+Store value in A(count of odd numbers) to desired memory location (Here at 2500H)
+
+Code :
+
+# ORG 2000H
+# BEGIN 2000H
+
+		LXI H,3000H
+		MVI B,00H
+		MOV C,M
+		
+		INX H
+LOOP:	MOV A,M
+		ANI 01H
+		JZ GO
+		INR B
+
+GO:		DCR C
+		INX H
+		JNZ LOOP
+
+		MOV A,B
+		STA 2500H
+		HLT
+
+
+# ORG 3000H
+# DB 05H,08H,01H,12H,06H,03H
+
+// INPUT -> 3000H = 05H (size of array), (elements in array) 3001H = 08H, 3002H = 01H, 3003H = 12H, 3004H = 06H 3005H = 03H
+// OUTPUT ->  2500H = 02H
+
+P9) Calculate sum of all even numbers in the given array
+
+Algorithm/Comments :
+Load Memory Location of the size of array in HL register pair
+Initialize B with 0
+Move size of array value (in M) to C
+Increment H (to access array elements)
+
+Starting of loop - Move element to A
+Apply AND with 01H on A
+if A is zero add current element to B
+else do nothing
+Decrement C , Increment H continue loop till C is non-zero
+
+Move B to A
+Store value in A(sum of even numbers) to desired memory location (Here at 2500H)
+
+
+Code :
+
+# ORG 2000H
+# BEGIN 2000H
+
+		LXI H,3000H
+		MVI B,00H
+		MOV C,M
+		
+		INX H
+LOOP:	MOV A,M
+		ANI 01H
+		JNZ GO
+		MOV A,B
+		ADD M
+		MOV B,A
+
+GO:		DCR C
+		INX H
+		JNZ LOOP
+
+		MOV A,B
+		STA 2500H
+		HLT
+
+
+# ORG 3000H
+# DB 05H,08H,01H,12H,06H,03H
+
+// INPUT -> 3000H = 05H (size of array), (elements in array) 3001H = 08H, 3002H = 01H, 3003H = 12H, 3004H = 06H 3005H = 03H
+// OUTPUT ->  2500H = 20H (08H + 12H + 06H)
+
+P10) Find Factorial of a number 
+
+Algorithm/Comments :
+Load Memory Location of the number in HL register pair
+Move the value to B
+Initialize D with 01H
+
+Start of factorial - call MULTIPLY ( like function calling in C or C++)
+Decrement B and keep going to factorial till B is non-zero
+Move value in D to A
+Store value in A(factorial) to the desired location(Here at 2500H)
+
+// Description of MULTIPLY
+Move value in B to C
+Initialize A with 00H
+Start of loop - Add D to A
+decrement C and loop till C is non-zero
+Move A to D
+return 
+
+Code :
+
+# ORG 2000H
+# BEGIN 2000H
+
+			LXI H,3000H
+			MOV B,M
+			MVI D,01H
+
+FACTORIAL:	CALL MULTIPLY
+			DCR B
+			JNZ FACTORIAL
+			INX H
+			MOV A,D
+			STA 2500H
+			HLT	
+
+MULTIPLY: 	MOV C,B
+			MVI A,00H
+
+LOOP:		ADD D
+			DCR C
+			JNZ LOOP
+			MOV D,A
+			RET
+
+# ORG 3000H
+# DB 05H
+
+// INPUT -> 3000H = 05H
+// OUTPUT -> 2500H = 78H

@@ -1,0 +1,18 @@
+# Following Program adds integers from 0 to 9 and stores the sum in register s1 
+# Register Name				 		$s0    $s1    $t0 
+# Value Before Program Execution 	 0      0      0	(all values in hex)
+
+Label         Instruction 				Machine Code
+		    add $s0, $0, $0				00008020
+			add $s1, $0, $0				00008820
+			addi $t0, $0, 10			2008000a
+loop:		
+			slt $t1, $s0, $t0			0208482a
+			beq $t1, $0, done			11200003
+			add $s1, $s1, $s0			02308820
+			addi $s0, $s0, 1			22100001
+			j loop						08000003
+done:
+
+# Register Name						$s0    $s1    $t0 
+# Value After Program Execution 	 a      2d     a     (all values in hex) 

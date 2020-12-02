@@ -1,0 +1,4 @@
+nasm -f elf lab5.asm 
+ld -m elf_i386 lab5.o io.o -o lab5
+./lab5
+

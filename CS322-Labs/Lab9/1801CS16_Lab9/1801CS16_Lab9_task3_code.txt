@@ -1,0 +1,9 @@
+
+# Test the MIPS multi cycle Processor Task 3
+# andi instruction
+
+# 		Assembly 			Machine 
+		
+		addi $2, $0, 0x000b   2002000b
+		andi $3, $2, 0x0003	  30430003
+
